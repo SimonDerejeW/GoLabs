@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 )
 
 func main(){
@@ -10,21 +12,40 @@ func main(){
 	var name string
 
 	// take name
-	fmt.Println("Enter your name: ")
-	fmt.Scanln(&name)
+	for {
+
+		fmt.Println("Enter your name: ")
+		fmt.Scanln(&name)
+
+		if strings.TrimSpace(name) == ""{
+			fmt.Println("Error: Name can't be empty. Please enter a valid name")
+		} else if _, err := strconv.Atoi(name) ; err == nil{
+			fmt.Println("Error: Name can't be a number. Please enter a valid name")
+		} else{
+			break
+		}
+	}
 
 	//take number of subjects
 
 	var numSubjects int
-	
-	fmt.Println("How many grades are you taking: ")
-	fmt.Scanln(&numSubjects)
 
-	if numSubjects <= 0 {
-		fmt.Println("Invalid number of subjects.")
-		return
+	for {
+		fmt.Println("How many grades are you taking: ")
+		_, err := fmt.Scanln(&numSubjects)
+
+		//validating input
+		if (err != nil){
+			fmt.Println("Please enter a valid number")
+		}else if numSubjects <= 0 {
+			fmt.Println("Invalid number of subjects.")
+		} else{
+
+			break
+		}
+
 	}
-
+	
 	//take subject name and grade
 	var subject string
 	var grade int
@@ -32,7 +53,15 @@ func main(){
 	fmt.Println("Enter the subject and the respective grade (Space Separated)")
 
 	for i := 0 ; i < numSubjects; i++{
-		fmt.Scan(&subject, &grade)
+		_, err := fmt.Scan(&subject, &grade)
+		
+		if (err != nil){
+			fmt.Println("Error: Please enter valid input")
+			return
+		} else if (0 > grade || grade > 100){
+			fmt.Println("Grade should be between 0 and 100")
+			return
+		}
 		grades[subject] = grade
 	}
 
